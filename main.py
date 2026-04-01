@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, Header, HTTPException, Depends
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from openai import OpenAI
 import os
 import random
 
 app = FastAPI()
+security = HTTPBearer()
 
 API_TOKEN = os.getenv("API_TOKEN")
 
@@ -42,6 +44,10 @@ Perfil del usuario:
 - Intereses: {", ".join(perfil_usuario["temas"])}
 """
 
+def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    if credentials.credentials != API_TOKEN:
+        raise HTTPException(status_code=401, detail="No autorizado")
+
 def generar_respuesta(texto_usuario):
 
     memoria_usuario.append(texto_usuario)
@@ -58,12 +64,12 @@ def generar_respuesta(texto_usuario):
 @app.get("/")
 def inicio():
     return {"mensaje": "Greqo activo 🚀"}
-    
-@app.post("/comando")
-def procesar(data: Comando, authorization: str = Header(None)):
 
-    if authorization != f"Bearer {API_TOKEN}":
-        raise HTTPException(status_code=401, detail="No autorizado")
+@app.post("/comando")
+def procesar(
+    data: Comando,
+    credenciales: HTTPAuthorizationCredentials = Depends(verificar_token)
+):
 
     texto = data.texto.lower()
 
@@ -76,7 +82,6 @@ def procesar(data: Comando, authorization: str = Header(None)):
     if "cómo estás" in texto:
         return {"accion": "hablar", "respuesta": "Operando dentro de parámetros normales."}
 
-    # 👇 ESTE ES EL BLOQUE CORREGIDO
     respuesta = generar_respuesta(texto)
 
     return {
