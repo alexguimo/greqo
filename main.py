@@ -66,7 +66,6 @@ def procesar(data: Comando, authorization: str = Header(None)):
 
     texto = data.texto.lower()
 
-    # Respuestas con personalidad básica
     if "hola" in texto:
         return {"accion": "hablar", "respuesta": "Hola. Soy Greqo. Estoy listo."}
 
@@ -76,10 +75,10 @@ def procesar(data: Comando, authorization: str = Header(None)):
     if "cómo estás" in texto:
         return {"accion": "hablar", "respuesta": "Operando dentro de parámetros normales."}
 
-   respuesta = generar_respuesta(texto)
+    # 👇 ESTE ES EL BLOQUE CORREGIDO
+    respuesta = generar_respuesta(texto)
 
     return {
-    "accion": "hablar",
-    "respuesta": respuesta
+        "accion": "hablar",
+        "respuesta": respuesta
     }
-}
