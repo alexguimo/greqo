@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Header, HTTPException
 from pydantic import BaseModel
+from openai import OpenAI
 import os
 import random
 
