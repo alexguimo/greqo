@@ -17,6 +17,10 @@ respuestas_default = [
     "No tengo suficiente información, pero quiero entender."
 ]
 
+@app.get("/")
+def inicio():
+    return {"mensaje": "Greqo activo 🚀"}
+    
 @app.post("/comando")
 def procesar(data: Comando, authorization: str = Header(None)):
 
