@@ -100,7 +100,7 @@ function setEstadoUI(texto, estado) {
  */
 async function enviarComando(texto) {
 
-    const url = "https://greqo-production.up.railway.app/comando"; // 🔥 TU URL DE RAILWAY
+    const url = "https://greqo-production.up.railway.app/"; // 🔥 TU URL DE RAILWAY
 
     const token = "x9#Greqo!2026_secure";
 
