@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resumen de Desarrollo - Greqo</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f5; color: #2c3e50; padding: 30px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h1 { color: #0056b3; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 30px;}
+        h2 { color: #34495e; margin-top: 30px;}
+        ul { margin-left: 20px; padding-left: 10px; }
+        li { margin-bottom: 15px; }
+        .file-name { font-weight: 700; color: #e74c3c; font-family: monospace; font-size: 1.1em; background: #f8f9fa; padding: 2px 6px; border-radius: 4px; border: 1px solid #ddd;}
+        .success { color: #27ae60; font-weight: bold; font-size: 1.2em; text-align: center; margin-top: 40px; background: #eaab; padding: 15px; border-radius: 8px;}
+        .highlight { color: #2980b9; font-weight: bold;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Resumen de Generación y Archivos de Greqo</h1>
+        <p>A continuación se presenta un recuento del desarrollo efectuado para el prototipo de Greqo, incluyendo todos los requerimientos especificados sobre diseño y funcionalidad de voz.</p>
+        
+        <h2>Lista de Archivos Generados en <code>scratch/greqo</code></h2>
+        <ul>
+            <li>
+                <span class="file-name">index.html</span><br>
+                Contiene la base semántica y estructurada del esqueleto web de la aplicación. Posee un visor/chat y un contenedor de controles muy minimalista en preparación al diseño gráfico. El botón principal está diseñado con su <code>id</code> correspondiente para ser enlazado por JS.
+            </li>
+            <li>
+                <span class="file-name">style.css</span><br>
+                Implementa la interfaz visual estilo *Inteligencia Artificial* tipo sistema IA clásico.
+                <ul>
+                    <li>El fondo es oscuro y texturizado usando radial-gradient para dar profundidad.</li>
+                    <li>Utiliza <em>Glassmorphism</em> mediante <code>backdrop-filter: blur()</code> y transparencias que simulan paneles de vidrio.</li>
+                    <li><span class="highlight">Diferenciación de Estados de Voz:</span> Incorpora clases clave que producen animaciones de sombras (Box-Shadow) usando el sistema de *keyframes*.
+                        <br>→ <span style="color:#00f0ff; background:#000; padding:2px 4px; border-radius:3px;">Cian Neón (#00f0ff)</span> para mostrar que Greqo está reconociendo activamente tu voz (Efecto expansión repetida corta).
+                        <br>→ <span style="color:#0066ff; background:#000; padding:2px 4px; border-radius:3px;">Azul Neón (#0066ff)</span> para cuando Greqo responde hablando (Efecto expansión rítmica e interna más densa).
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <span class="file-name">script.js</span><br>
+                El motor funcional de este prototipo:
+                <ul>
+                    <li>Hace uso de las APIs <code>SpeechRecognition</code> y <code>speechSynthesis</code> del navegador nativo con configuración <code>es-CO</code> (Español).</li>
+                    <li>Dispone del token Bearer como constante en código crudo para poder hacer el <code>fetch</code> sin exponerlo en una interfaz gráfica.</li>
+                    <li><span class="highlight">Simulación Temporal:</span> Incorpora dentro de <code>enviarComando()</code> un retardo (delay cronometrado en un <code>setTimeout</code> de 1.8 segundos) que hace al usuario percibir que transcurrió tiempo entre su consulta, el post de red y la deliberación de Greqo. Si la llamada POST falla, activa un motor interno que "responde temporalmente" permitiendo apreciar todo el loop de voz y UI.</li>
+                </ul>
+            </li>
+            <li>
+                <span class="file-name">lista.html</span><br>
+                Este archivo. Actúa como acta de entrega documentando qué fue editado y creado para finalizar la ejecución.
+            </li>
+        </ul>
+        <div class="success">¡Todo el prototipo fue creado exitosamente usando solo HTML5, CSS y JavaScript Vanilla!</div>
+    </div>
+</body>
+</html>

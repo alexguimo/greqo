@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greqo - Asistente Virtual</title>
+    <meta name="description" content="Prototipo de Asistente Virtual Controlado por Voz">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>GREQO</h1>
+            <p>I.A. de Interfaz de Voz</p>
+        </header>
+
+        <main class="chat-container" id="chat-container">
+            <div id="chat-box" class="chat-box">
+                <!-- Los mensajes de usuario y sistema se agregarán aquí dinámicamente -->
+            </div>
+        </main>
+
+        <div class="controls">
+            <div id="status-indicator">Inactivo</div>
+            <button id="btn-hablar" class="btn-ia" aria-label="Hablar con Greqo">
+                <span id="btn-text">Hablar con Greqo</span>
+            </button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
