@@ -77,12 +77,18 @@ def generar_respuesta(texto_usuario):
                 "model": "phi",
                 "prompt": prompt,
                 "stream": False
-            }
-        )
+            },
+            # Ponemos un Timeout
+            timeout=10  # 🔥 IMPORTANTE
+        )    
 
         data = response.json()
 
-        return data["response"]
+        # Valida respuesta en Ollama
+        if "response" in data:
+            return data["response"]
+        else:
+            return "No pude generar una respuesta en este momento."
 
     except Exception as e:
         print("Error Ollama:", e)
@@ -93,9 +99,18 @@ def generar_respuesta(texto_usuario):
 def inicio():
     return {"mensaje": "Greqo activo 🚀"}
 
+# Mejoramos la necesidad de IA
 def necesita_ia(texto):
     palabras_clave = ["explica", "por qué", "cómo", "opina", "analiza"]
-    return any(p in texto for p in palabras_clave)
+
+    if any(p in texto for p in palabras_clave):
+        return True
+
+    # 🔥 si es largo → probablemente necesita IA
+    if len(texto.split()) > 6:
+        return True
+
+    return False
 
 
 def respuesta_simple(texto):
