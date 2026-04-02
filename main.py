@@ -76,13 +76,35 @@ def generar_respuesta(texto_usuario):
 def inicio():
     return {"mensaje": "Greqo activo 🚀"}
 
+def necesita_ia(texto):
+    palabras_clave = ["explica", "por qué", "cómo", "opina", "analiza"]
+    return any(p in texto for p in palabras_clave)
+
+
+def respuesta_simple(texto):
+    if "hora" in texto:
+        return "No tengo acceso al tiempo real aún."
+    
+    if "nombre" in texto:
+        return "Soy Greqo."
+    
+    return "Continúa, estoy escuchando."
+
+
 @app.post("/comando")
 def procesar(data: Comando, credenciales: HTTPAuthorizationCredentials = Depends(security)):
-
+    
     if credenciales.credentials != API_TOKEN:
         raise HTTPException(status_code=401, detail="No autorizado")
 
     texto = data.texto.lower()
+
+    # 🥇 FILTRO BASICO (ahorro máximo)
+    if len(texto) < 5:
+        return {
+            "accion": "hablar",
+            "respuesta": "No entendí bien, repite."
+        }
 
     # 🥇 RESPUESTAS GRATIS
     if "hola" in texto:
@@ -91,12 +113,18 @@ def procesar(data: Comando, credenciales: HTTPAuthorizationCredentials = Depends
     if "cómo estás" in texto:
         return {"accion": "hablar", "respuesta": "Operando correctamente."}
 
-    # 🥈 RESPUESTA LOCAL (memoria simple)
+    # 🥈 MEMORIA SIMPLE
     if texto in memoria_usuario:
-        return {"accion": "hablar", "respuesta": "Ya hemos hablado de eso antes."}
+        return {
+            "accion": "hablar",
+            "respuesta": "Ya hemos hablado de eso antes."
+        }
 
-    # 🥉 IA SOLO SI NO SABE
-    respuesta = generar_respuesta(texto)
+    # 🥉 DECISIÓN INTELIGENTE (AQUÍ ESTÁ EL AHORRO REAL)
+    if necesita_ia(texto):
+        respuesta = generar_respuesta(texto)
+    else:
+        respuesta = respuesta_simple(texto)
 
     return {
         "accion": "hablar",
