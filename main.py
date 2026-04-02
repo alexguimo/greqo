@@ -77,22 +77,25 @@ def inicio():
     return {"mensaje": "Greqo activo 🚀"}
 
 @app.post("/comando")
-def procesar(
-    data: Comando,
-    credenciales: HTTPAuthorizationCredentials = Depends(verificar_token)
-):
+def procesar(data: Comando, credenciales: HTTPAuthorizationCredentials = Depends(security)):
+
+    if credenciales.credentials != API_TOKEN:
+        raise HTTPException(status_code=401, detail="No autorizado")
 
     texto = data.texto.lower()
 
+    # 🥇 RESPUESTAS GRATIS
     if "hola" in texto:
-        return {"accion": "hablar", "respuesta": "Hola. Soy Greqo. Estoy listo."}
-
-    if "quién eres" in texto:
-        return {"accion": "hablar", "respuesta": "Soy Greqo. Un sistema diseñado para asistirte y evolucionar contigo."}
+        return {"accion": "hablar", "respuesta": "Hola. Soy Greqo."}
 
     if "cómo estás" in texto:
-        return {"accion": "hablar", "respuesta": "Operando dentro de parámetros normales."}
+        return {"accion": "hablar", "respuesta": "Operando correctamente."}
 
+    # 🥈 RESPUESTA LOCAL (memoria simple)
+    if texto in memoria_usuario:
+        return {"accion": "hablar", "respuesta": "Ya hemos hablado de eso antes."}
+
+    # 🥉 IA SOLO SI NO SABE
     respuesta = generar_respuesta(texto)
 
     return {
