@@ -4,6 +4,8 @@ from pydantic import BaseModel
 from openai import OpenAI
 import os
 import random
+import requests
+
 
 app = FastAPI()
 
@@ -59,18 +61,33 @@ def verificar_token(credentials: HTTPAuthorizationCredentials = Depends(security
     if credentials.credentials != API_TOKEN:
         raise HTTPException(status_code=401, detail="No autorizado")
 
+
 def generar_respuesta(texto_usuario):
 
     memoria_usuario.append(texto_usuario)
 
-    contexto = "\n".join(memoria_usuario[-5:])  # últimas 5 frases
+    contexto = "\n".join(memoria_usuario[-5:])
 
-    prompt = PERSONALIDAD + "\nContexto:\n" + contexto + "\nUsuario:" + texto_usuario
+    prompt = PERSONALIDAD + "\n\nContexto:\n" + contexto + "\nUsuario: " + texto_usuario
 
-    # Por ahora simulado
-    respuesta = f"Entiendo lo que dices: {texto_usuario}"
+    try:
+        response = requests.post(
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "phi",
+                "prompt": prompt,
+                "stream": False
+            }
+        )
 
-    return respuesta
+        data = response.json()
+
+        return data["response"]
+
+    except Exception as e:
+        print("Error Ollama:", e)
+        return "Estoy teniendo problemas para procesar eso ahora mismo."
+
 
 @app.get("/")
 def inicio():
